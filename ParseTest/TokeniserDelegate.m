@@ -10,15 +10,17 @@
 
 @implementation TokeniserDelegate
 
-- (BOOL)tokeniser:(CPTokeniser *)tokeniser shouldConsumeToken:(CPToken *)token {
+- (BOOL)tokeniser:(CPTokeniser *)tokeniser shouldConsumeToken:(CPToken *)token
+{
     return YES;
 }
 
-- (NSArray *)tokeniser:(CPTokeniser *)tokeniser willProduceToken:(CPToken *)token {
-    if ([token isKindOfClass:[CPWhiteSpaceToken class]] || [[token name] isEqualToString:@"Comment"]) {
-        return [NSArray array];
+- (void)tokeniser:(CPTokeniser *)tokeniser requestsToken:(CPToken *)token pushedOntoStream:(CPTokenStream *)stream
+{
+    if (![token isWhiteSpaceToken] && ![[token name] isEqualToString:@"Comment"])
+    {
+        [stream pushToken:token];
     }
-    return [NSArray arrayWithObject:token];
 }
 
 @end
